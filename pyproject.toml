@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jsonl-stream-utils"
+version = "0.1.0"
+description = "Dependency-free utilities for validating and transforming JSONL streams"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "jsonl-stream-utils contributors" }]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+jsonl-stream-utils = "jsonl_stream_utils.cli:main"
+
+[tool.setuptools]
+packages = ["jsonl_stream_utils"]
