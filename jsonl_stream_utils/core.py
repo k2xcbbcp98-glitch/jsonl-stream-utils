@@ -64,3 +64,22 @@ def encode_records(records: Iterable[Any]) -> Iterator[str]:
 
     for record in records:
         yield json.dumps(record, ensure_ascii=False, separators=(",", ":"))
+
+
+def project_records(
+    records: Iterable[JsonlRecord],
+    fields: Sequence[str],
+    *,
+    include_missing: bool = False,
+) -> Iterator[JsonlRecord]:
+    """Project object records onto ``fields`` while preserving line numbers."""
+
+    for record in records:
+        yield JsonlRecord(
+            line_number=record.line_number,
+            value=select_fields(
+                record.value,
+                fields,
+                include_missing=include_missing,
+            ),
+        )

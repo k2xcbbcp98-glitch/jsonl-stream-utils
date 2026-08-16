@@ -8,6 +8,7 @@ A small, dependency-free Python toolkit for validating and transforming JSON Lin
 - Report malformed lines with line numbers
 - Skip blank lines when requested
 - Keep only selected object fields
+- Project fields across a parsed stream while preserving source line numbers
 - Stream records without loading the whole input into memory
 - Run on Python 3.9 or later with no third-party dependencies
 

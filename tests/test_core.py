@@ -1,7 +1,7 @@
 import io
 import unittest
 
-from jsonl_stream_utils import JsonlError, iter_jsonl, select_fields
+from jsonl_stream_utils import JsonlError, iter_jsonl, project_records, select_fields
 
 
 class IterJsonlTests(unittest.TestCase):
@@ -31,6 +31,17 @@ class SelectFieldsTests(unittest.TestCase):
     def test_rejects_non_objects(self):
         with self.assertRaises(TypeError):
             select_fields([1, 2], ["id"])
+
+
+class ProjectRecordsTests(unittest.TestCase):
+    def test_projects_stream_and_preserves_line_numbers(self):
+        source = io.StringIO('{"id": 1, "name": "alpha"}\n\n{"id": 2}\n')
+        records = iter_jsonl(source, skip_blank=True)
+
+        projected = list(project_records(records, ["name"], include_missing=True))
+
+        self.assertEqual([record.line_number for record in projected], [1, 3])
+        self.assertEqual([record.value for record in projected], [{"name": "alpha"}, {"name": None}])
 
 
 if __name__ == "__main__":
