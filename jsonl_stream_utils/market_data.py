@@ -43,3 +43,26 @@ def valid_bars(rows: Iterable[Mapping[str, Any]]) -> list[Mapping[str, Any]]:
     """Keep only records that pass :func:`validate_bar`."""
 
     return [row for row in rows if not validate_bar(row)]
+
+
+def normalize_bar(row: Mapping[str, Any]) -> dict[str, Any]:
+    """Return a validated bar with canonical field types.
+
+    Symbols and timestamps are represented as strings and numeric OHLCV values
+    are represented as floats. The function is intentionally limited to shape
+    normalization; it does not fill missing market data or infer prices.
+    """
+
+    errors = validate_bar(row)
+    if errors:
+        raise ValueError("; ".join(errors))
+
+    return {
+        "symbol": str(row["symbol"]),
+        "timestamp": str(row["timestamp"]),
+        "open": float(row["open"]),
+        "high": float(row["high"]),
+        "low": float(row["low"]),
+        "close": float(row["close"]),
+        "volume": float(row["volume"]),
+    }

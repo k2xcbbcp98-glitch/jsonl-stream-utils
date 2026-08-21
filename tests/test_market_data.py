@@ -1,6 +1,6 @@
 import unittest
 
-from jsonl_stream_utils import validate_bar, valid_bars
+from jsonl_stream_utils import normalize_bar, validate_bar, valid_bars
 
 
 VALID = {
@@ -27,6 +27,16 @@ class MarketDataTests(unittest.TestCase):
     def test_filters_invalid_bars(self):
         invalid = dict(VALID, high=9.0)
         self.assertEqual(valid_bars([VALID, invalid]), [VALID])
+
+    def test_normalizes_numeric_types(self):
+        normalized = normalize_bar(dict(VALID, open=10, volume=120000))
+        self.assertEqual(normalized["symbol"], "000001.SZ")
+        self.assertIsInstance(normalized["open"], float)
+        self.assertIsInstance(normalized["volume"], float)
+
+    def test_normalize_rejects_invalid_bar(self):
+        with self.assertRaises(ValueError):
+            normalize_bar(dict(VALID, low=11.0))
 
 
 if __name__ == "__main__":

@@ -1,7 +1,7 @@
 """Streaming helpers for JSON Lines data."""
 
 from .core import JsonlError, JsonlRecord, iter_jsonl, project_records, select_fields
-from .market_data import validate_bar, valid_bars
+from .market_data import normalize_bar, validate_bar, valid_bars
 
 __all__ = [
     "JsonlError",
@@ -9,6 +9,7 @@ __all__ = [
     "iter_jsonl",
     "project_records",
     "select_fields",
+    "normalize_bar",
     "validate_bar",
     "valid_bars",
 ]
